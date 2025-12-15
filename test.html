@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scopreneur API Test Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+        }
+
+        .test-section {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .test-section h2 {
+            color: #2c5f8d;
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.6rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .result {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            font-size: 0.85rem;
+        }
+
+        .success {
+            border-color: #48a868;
+            background: #d4edda;
+        }
+
+        .error {
+            border-color: #dc3545;
+            background: #f8d7da;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .status.connected {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status.disconnected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .api-url {
+            background: #fff3cd;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border-left: 4px solid #ffc107;
+        }
+
+        .api-url code {
+            color: #856404;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Scopreneur API Test Page</h1>
+        <p class="subtitle">Test your backend API endpoints</p>
+
+        <div class="api-url">
+            <strong>API URL:</strong> <code id="apiUrl">https://scopreneur-backend.onrender.com</code>
+            <br><small>Change this in the script if your backend is on a different URL</small>
+        </div>
+
+        <div id="connectionStatus"></div>
+
+        <!-- Test 1: Check Backend Connection -->
+        <div class="test-section">
+            <h2>1️⃣ Test Backend Connection</h2>
+            <button onclick="testConnection()">Test Connection</button>
+            <div id="connectionResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 2: Register Student -->
+        <div class="test-section">
+            <h2>2️⃣ Register Student</h2>
+            <div class="input-group">
+                <label>Full Name:</label>
+                <input type="text" id="studentName" value="Test Student">
+            </div>
+            <div class="input-group">
+                <label>Email:</label>
+                <input type="email" id="studentEmail" value="student@test.com">
+            </div>
+            <div class="input-group">
+                <label>Phone:</label>
+                <input type="tel" id="studentPhone" value="+2348012345678">
+            </div>
+            <div class="input-group">
+                <label>Password:</label>
+                <input type="password" id="studentPassword" value="password123">
+            </div>
+            <button onclick="registerStudent()">Register Student</button>
+            <div id="studentRegResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 3: Login -->
+        <div class="test-section">
+            <h2>3️⃣ Login</h2>
+            <div class="input-group">
+                <label>Email:</label>
+                <input type="email" id="loginEmail" value="student@test.com">
+            </div>
+            <div class="input-group">
+                <label>Password:</label>
+                <input type="password" id="loginPassword" value="password123">
+            </div>
+            <button onclick="testLogin()">Login</button>
+            <div id="loginResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 4: Get Current User -->
+        <div class="test-section">
+            <h2>4️⃣ Get Current User (Requires Login)</h2>
+            <button onclick="getCurrentUser()">Get Current User</button>
+            <div id="currentUserResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 5: Get Tutors -->
+        <div class="test-section">
+            <h2>5️⃣ Get All Tutors</h2>
+            <button onclick="getTutors()">Get Tutors</button>
+            <div id="tutorsResult" class="result" style="display: none;"></div>
+        </div>
+
+        <!-- Test 6: Logout -->
+        <div class="test-section">
+            <h2>6️⃣ Logout</h2>
+            <button onclick="testLogout()">Logout</button>
+            <div id="logoutResult" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://scopreneur-backend.onrender.com';
+        document.getElementById('apiUrl').textContent = API_BASE_URL;
+
+        // Display result helper
+        function showResult(elementId, data, isError = false) {
+            const element = document.getElementById(elementId);
+            element.style.display = 'block';
+            element.className = isError ? 'result error' : 'result success';
+            element.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+        }
+
+        // Update connection status
+        function updateConnectionStatus(connected) {
+            const statusDiv = document.getElementById('connectionStatus');
+            if (connected) {
+                statusDiv.innerHTML = '<div class="status connected">✅ Backend Connected</div>';
+            } else {
+                statusDiv.innerHTML = '<div class="status disconnected">❌ Backend Disconnected</div>';
+            }
+        }
+
+        // Test 1: Check Connection
+        async function testConnection() {
+            try {
+                const response = await fetch(API_BASE_URL.replace('/api', ''));
+                
+                if (response.ok) {
+                    showResult('connectionResult', {
+                        status: 'Connected',
+                        message: 'Backend is running and accessible!'
+                    });
+                    updateConnectionStatus(true);
+                } else {
+                    throw new Error('Backend returned error');
+                }
+            } catch (error) {
+                showResult('connectionResult', {
+                    status: 'Error',
+                    message: 'Cannot connect to backend. Make sure it is running on ' + API_BASE_URL,
+                    error: error.message
+                }, true);
+                updateConnectionStatus(false);
+            }
+        }
+
+        // Test 2: Register Student
+        async function registerStudent() {
+            const data = {
+                fullName: document.getElementById('studentName').value,
+                email: document.getElementById('studentEmail').value,
+                phone: document.getElementById('studentPhone').value,
+                password: document.getElementById('studentPassword').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Save token for subsequent tests
+                    if (result.token) {
+                        localStorage.setItem('test_token', result.token);
+                        localStorage.setItem('test_user', JSON.stringify(result.user));
+                    }
+                    showResult('studentRegResult', result);
+                } else {
+                    showResult('studentRegResult', result, true);
+                }
+            } catch (error) {
+                showResult('studentRegResult', {
+                    error: error.message,
+                    message: 'Network error or CORS issue. Check backend CORS settings.'
+                }, true);
+            }
+        }
+
+        // Test 3: Login
+        async function testLogin() {
+            const data = {
+                email: document.getElementById('loginEmail').value,
+                password: document.getElementById('loginPassword').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    // Save token for subsequent tests
+                    localStorage.setItem('test_token', result.token);
+                    localStorage.setItem('test_user', JSON.stringify(result.user));
+                    showResult('loginResult', {
+                        ...result,
+                        note: 'Token saved! You can now test authenticated endpoints.'
+                    });
+                } else {
+                    showResult('loginResult', result, true);
+                }
+            } catch (error) {
+                showResult('loginResult', {
+                    error: error.message,
+                    message: 'Network error or CORS issue.'
+                }, true);
+            }
+        }
+
+        // Test 4: Get Current User
+        async function getCurrentUser() {
+            const token = localStorage.getItem('test_token');
+
+            if (!token) {
+                showResult('currentUserResult', {
+                    error: 'No token found',
+                    message: 'Please login first (Test #3)'
+                }, true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showResult('currentUserResult', result);
+                } else {
+                    showResult('currentUserResult', result, true);
+                }
+            } catch (error) {
+                showResult('currentUserResult', {
+                    error: error.message,
+                    message: 'Network error or token expired.'
+                }, true);
+            }
+        }
+
+        // Test 5: Get Tutors
+        async function getTutors() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/tutors`);
+                const result = await response.json();
+
+                if (response.ok) {
+                    showResult('tutorsResult', {
+                        totalTutors: result.tutors.length,
+                        tutors: result.tutors
+                    });
+                } else {
+                    showResult('tutorsResult', result, true);
+                }
+            } catch (error) {
+                showResult('tutorsResult', {
+                    error: error.message,
+                    message: 'Network error.'
+                }, true);
+            }
+        }
+
+        // Test 6: Logout
+        function testLogout() {
+            localStorage.removeItem('test_token');
+            localStorage.removeItem('test_user');
+            showResult('logoutResult', {
+                message: 'Logged out successfully! Token removed from localStorage.'
+            });
+        }
+
+        // Auto-test connection on load
+        window.addEventListener('DOMContentLoaded', () => {
+            testConnection();
+        });
+    </script>
+</body>
+</html>

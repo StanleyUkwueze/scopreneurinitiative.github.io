@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Scopreneur Initiative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .logo span {
+            color: #ffc107;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .admin-badge {
+            background: #ffc107;
+            color: #000;
+            padding: 0.3rem 1rem;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Header */
+        .dashboard-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .dashboard-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-header p {
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .stat-title {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .stat-icon {
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-change {
+            font-size: 0.85rem;
+            color: #48a868;
+        }
+
+        .stat-change.negative {
+            color: #dc3545;
+        }
+
+        /* Tabs */
+        .tabs {
+            background: #fff;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: #fff;
+        }
+
+        .tab:hover:not(.active) {
+            background: #f8f9fa;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c5f8d;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .data-table th {
+            background: #f8f9fa;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: #2c5f8d;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .data-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .data-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-rejected {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-active {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        /* Action Buttons */
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            font-size: 0.85rem;
+            margin: 0 0.25rem;
+        }
+
+        .btn-success {
+            background: #48a868;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #38865a;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #dee2e6;
+        }
+
+        /* Charts Container */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .chart-title {
+            font-size: 1.3rem;
+            color: #2c5f8d;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .modal-header h2 {
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .detail-label {
+            font-weight: 600;
+            color: #666;
+        }
+
+        .detail-value {
+            color: #333;
+            text-align: right;
+        }
+
+        /* Search and Filter */
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #dc3545;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+            }
+
+            .data-table {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span>Scop</span>reneur <span class="admin-badge">ADMIN</span>
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">View Site</a>
+                <a href="javascript:logout()" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard">
+        <!-- Alert -->
+        <div id="alertBox" class="alert"></div>
+
+        <!-- Header -->
+        <div class="dashboard-header">
+            <h1>🛡️ Admin Dashboard</h1>
+            <p>Manage platform operations and monitor performance</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Users</span>
+                    <span class="stat-icon">👥</span>
+                </div>
+                <div class="stat-value" id="totalUsers">0</div>
+                <div class="stat-change">↑ <span id="usersChange">0</span> this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Active Tutors</span>
+                    <span class="stat-icon">👨‍🏫</span>
+                </div>
+                <div class="stat-value" id="activeTutors">0</div>
+                <div class="stat-change">↑ <span id="tutorsChange">0</span> pending</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Total Bookings</span>
+                    <span class="stat-icon">📚</span>
+                </div>
+                <div class="stat-value" id="totalBookings">0</div>
+                <div class="stat-change">↑ <span id="bookingsChange">0</span> this month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Platform Revenue</span>
+                    <span class="stat-icon">💰</span>
+                </div>
+                <div class="stat-value" id="totalRevenue">₦0</div>
+                <div class="stat-change">↑ <span id="revenueChange">₦0</span> this month</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('overview')">
+                📊 Overview
+            </button>
+            <button class="tab" onclick="switchTab('tutors')">
+                👨‍🏫 Tutors
+            </button>
+            <button class="tab" onclick="switchTab('bookings')">
+                📚 Bookings
+            </button>
+            <button class="tab" onclick="switchTab('users')">
+                👥 Users
+            </button>
+            <button class="tab" onclick="switchTab('analytics')">
+                📈 Analytics
+            </button>
+        </div>
+
+        <!-- Overview Tab -->
+        <div id="overviewTab" class="tab-content active">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Recent Activity</h2>
+                </div>
+                
+                <div id="loadingOverview" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading data...</p>
+                </div>
+
+                <div id="recentActivity" style="display: none;">
+                    <h3 style="margin-bottom: 1rem; color: #2c5f8d;">Recent Bookings</h3>
+                    <div id="recentBookingsTable"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tutors Tab -->
+        <div id="tutorsTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">Tutor Management</h2>
+                </div>
+
+                <div class="toolbar">
+                    <div class="search-box">
+                        <input type="text" id="tutorSearch" placeholder="Search tutors..." oninput="searchTutors()">
+                    </div>
+                    <div class="filter-group">
+                        <button class="action-btn btn-primary active" onclick="filterTutors('all')">All</button>
+                        <button class="action-btn btn-secondary" onclick="filterTutors('pending')">Pending</button>
+                        <button class="action-btn btn-secondary" onclick="filterTutors('approved')">Approved</button>
+                    </div>
+                </div>
+
+                <div id="tutorsTable"></div>
+            </div>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookingsTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">All Bookings</h2>
+                </div>
+
+                <div class="toolbar">
+                    <div class="search-box">
+                        <input type="text" id="bookingSearch" placeholder="Search bookings..." oninput="searchBookings()">
+                    </div>
+                    <div class="filter-group">
+                        <button class="action-btn btn-primary active" onclick="filterBookings('all')">All</button>
+                        <button class="action-btn btn-secondary" onclick="filterBookings('pending')">Pending</button>
+                        <button class="action-btn btn-secondary" onclick="filterBookings('confirmed')">Confirmed</button>
+                        <button class="action-btn btn-secondary" onclick="filterBookings('completed')">Completed</button>
+                    </div>
+                </div>
+
+                <div id="bookingsTable"></div>
+            </div>
+        </div>
+
+        <!-- Users Tab -->
+        <div id="usersTab" class="tab-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">User Management</h2>
+                </div>
+
+                <div class="toolbar">
+                    <div class="search-box">
+                        <input type="text" id="userSearch" placeholder="Search users..." oninput="searchUsers()">
+                    </div>
+                </div>
+
+                <div id="usersTable"></div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analyticsTab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">Platform Analytics</h2>
+                
+                <div class="charts-grid">
+                    <div class="chart-card">
+                        <h3 class="chart-title">Monthly Bookings</h3>
+                        <div id="bookingsChart" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Chart visualization would go here
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <h3 class="chart-title">Revenue Trend</h3>
+                        <div id="revenueChart" style="height: 300px; display: flex; align-items: center; justify-content: center; color: #999;">
+                            Chart visualization would go here
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <h3 style="margin-bottom: 1.5rem; color: #2c5f8d;">Key Metrics</h3>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-title">Conversion Rate</div>
+                            <div class="stat-value" id="conversionRate">0%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Avg Booking Value</div>
+                            <div class="stat-value" id="avgBookingValue">₦0</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Student Retention</div>
+                            <div class="stat-value" id="studentRetention">0%</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-title">Tutor Utilization</div>
+                            <div class="stat-value" id="tutorUtilization">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tutor Details Modal -->
+    <div id="tutorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tutor Details</h2>
+            </div>
+            <div class="modal-body" id="tutorModalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://scopreneur-backend.onrender.com';
+        
+        let allTutors = [];
+        let allBookings = [];
+        let allUsers = [];
+        let analytics = {};
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'admin') {
+            alert('Access denied. Admin only.');
+            window.location.href = 'index.html';
+        }
+
+        // Load dashboard on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadAnalytics();
+            loadTutors();
+            loadBookings();
+            loadUsers();
+        });
+
+        // Load analytics
+        async function loadAnalytics() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/analytics`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    analytics = data.analytics;
+                    displayAnalytics();
+                }
+            } catch (error) {
+                console.error('Load analytics error:', error);
+            }
+        }
+
+        // Display analytics
+        function displayAnalytics() {
+            document.getElementById('totalUsers').textContent = analytics.totalUsers || 0;
+            document.getElementById('activeTutors').textContent = analytics.totalTutors || 0;
+            document.getElementById('totalBookings').textContent = analytics.totalBookings || 0;
+            document.getElementById('totalRevenue').textContent = `₦${(analytics.totalRevenue || 0).toLocaleString()}`;
+        }
+
+        // Load tutors
+        async function loadTutors() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/pending-tutors`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    allTutors = data.pendingTutors || [];
+                    
+                    // Also get approved tutors
+                    const approvedResponse = await fetch(`${API_BASE_URL}/tutors`);
+                    const approvedData = await approvedResponse.json();
+                    allTutors = [...allTutors, ...approvedData.tutors];
+                    
+                    displayTutors(allTutors);
+                    document.getElementById('tutorsChange').textContent = data.pendingTutors?.length || 0;
+                }
+            } catch (error) {
+                console.error('Load tutors error:', error);
+            }
+        }
+
+        // Display tutors
+        function displayTutors(tutors) {
+            const table = document.getElementById('tutorsTable');
+            
+            if (tutors.length === 0) {
+                table.innerHTML = '<div class="empty-state"><div class="empty-icon">👨‍🏫</div><h3>No tutors found</h3></div>';
+                return;
+            }
+
+            table.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Qualifications</th>
+                            <th>Rate</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${tutors.map(tutor => `
+                            <tr>
+                                <td>${tutor.userId.fullName}</td>
+                                <td>${tutor.userId.email}</td>
+                                <td>${tutor.qualifications}</td>
+                                <td>₦${tutor.hourlyRate.toLocaleString()}/hr</td>
+                                <td>
+                                    <span class="status-badge ${tutor.userId.isApproved ? 'status-approved' : 'status-pending'}">
+                                        ${tutor.userId.isApproved ? 'Approved' : 'Pending'}
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="action-btn btn-primary" onclick="viewTutor('${tutor.userId._id}')">View</button>
+                                    ${!tutor.userId.isApproved ? `
+                                        <button class="action-btn btn-success" onclick="approveTutor('${tutor.userId._id}')">Approve</button>
+                                        <button class="action-btn btn-danger" onclick="rejectTutor('${tutor.userId._id}')">Reject</button>
+                                    ` : ''}
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Approve tutor
+        async function approveTutor(tutorId) {
+            if (!confirm('Approve this tutor?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/tutors/${tutorId}/approval`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ approved: true })
+                });
+
+                if (response.ok) {
+                    showAlert('Tutor approved successfully!', 'success');
+                    loadTutors();
+                    loadAnalytics();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.error || 'Failed to approve tutor', 'error');
+                }
+            } catch (error) {
+                console.error('Approve tutor error:', error);
+                showAlert('Failed to approve tutor', 'error');
+            }
+        }
+
+        // Reject tutor
+        async function rejectTutor(tutorId) {
+            if (!confirm('Reject this tutor application?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/tutors/${tutorId}/approval`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ approved: false })
+                });
+
+                if (response.ok) {
+                    showAlert('Tutor rejected', 'info');
+                    loadTutors();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.error || 'Failed to reject tutor', 'error');
+                }
+            } catch (error) {
+                console.error('Reject tutor error:', error);
+                showAlert('Failed to reject tutor', 'error');
+            }
+        }
+
+        // View tutor details
+        function viewTutor(tutorId) {
+            const tutor = allTutors.find(t => t.userId._id === tutorId);
+            if (!tutor) return;
+
+            const modalBody = document.getElementById('tutorModalBody');
+            modalBody.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Full Name</span>
+                    <span class="detail-value">${tutor.userId.fullName}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email</span>
+                    <span class="detail-value">${tutor.userId.email}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-value">${tutor.userId.phone}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Qualifications</span>
+                    <span class="detail-value">${tutor.qualifications}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Experience</span>
+                    <span class="detail-value">${tutor.experience}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Hourly Rate</span>
+                    <span class="detail-value">₦${tutor.hourlyRate.toLocaleString()}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Categories</span>
+                    <span class="detail-value">${tutor.categories.join(', ')}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Subjects</span>
+                    <span class="detail-value">${tutor.subjects.join(', ')}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Session Types</span>
+                    <span class="detail-value">${tutor.sessionTypes.join(', ')}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Rating</span>
+                    <span class="detail-value">⭐ ${tutor.rating.toFixed(1)} (${tutor.totalRatings} reviews)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Sessions</span>
+                    <span class="detail-value">${tutor.totalSessions}</span>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <strong>Bio:</strong>
+                    <p style="margin-top: 0.5rem; color: #555;">${tutor.bio}</p>
+                </div>
+                <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+                    <button class="action-btn btn-secondary" onclick="closeModal()" style="flex: 1;">Close</button>
+                </div>
+            `;
+
+            document.getElementById('tutorModal').classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('tutorModal').classList.remove('show');
+        }
+
+        // Load bookings
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/bookings`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    allBookings = data.bookings || [];
+                    displayBookings(allBookings);
+                    displayRecentActivity(allBookings.slice(0, 10));
+                    document.getElementById('loadingOverview').style.display = 'none';
+                    document.getElementById('recentActivity').style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Load bookings error:', error);
+            }
+        }
+
+        // Display bookings
+        function displayBookings(bookings) {
+            const table = document.getElementById('bookingsTable');
+            
+            if (bookings.length === 0) {
+                table.innerHTML = '<div class="empty-state"><div class="empty-icon">📚</div><h3>No bookings found</h3></div>';
+                return;
+            }
+
+            table.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Student</th>
+                            <th>Tutor</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bookings.map(booking => `
+                            <tr>
+                                <td>#${booking._id.substring(0, 8).toUpperCase()}</td>
+                                <td>${booking.studentId.fullName}</td>
+                                <td>${booking.tutorId.fullName}</td>
+                                <td>${booking.subject}</td>
+                                <td>${new Date(booking.date).toLocaleDateString()}</td>
+                                <td>₦${booking.totalAmount.toLocaleString()}</td>
+                                <td>
+                                    <span class="status-badge status-${booking.status}">
+                                        ${booking.status.toUpperCase()}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Display recent activity
+        function displayRecentActivity(bookings) {
+            const container = document.getElementById('recentBookingsTable');
+            
+            container.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Student</th>
+                            <th>Tutor</th>
+                            <th>Subject</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${bookings.map(booking => `
+                            <tr>
+                                <td>${booking.studentId.fullName}</td>
+                                <td>${booking.tutorId.fullName}</td>
+                                <td>${booking.subject}</td>
+                                <td>${new Date(booking.date).toLocaleDateString()}</td>
+                                <td>₦${booking.totalAmount.toLocaleString()}</td>
+                                <td>
+                                    <span class="status-badge status-${booking.status}">
+                                        ${booking.status}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Load users
+        async function loadUsers() {
+            // This would be a separate endpoint in production
+            // For now, we'll combine from tutors and assume students
+            allUsers = [
+                ...allTutors.map(t => ({...t.userId, role: 'tutor'}))
+            ];
+            displayUsers(allUsers);
+        }
+
+        // Display users
+        function displayUsers(users) {
+            const table = document.getElementById('usersTable');
+            
+            if (users.length === 0) {
+                table.innerHTML = '<div class="empty-state"><div class="empty-icon">👥</div><h3>No users found</h3></div>';
+                return;
+            }
+
+            table.innerHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr>
+                                <td>${user.fullName}</td>
+                                <td>${user.email}</td>
+                                <td>${user.phone}</td>
+                                <td>
+                                    <span class="status-badge status-active">
+                                        ${user.role.toUpperCase()}
+                                    </span>
+                                </td>
+                                <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+                                <td>
+                                    <span class="status-badge ${user.isVerified ? 'status-approved' : 'status-pending'}">
+                                        ${user.isVerified ? 'Active' : 'Pending'}
+                                    </span>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        // Search functions
+        function searchTutors() {
+            const query = document.getElementById('tutorSearch').value.toLowerCase();
+            const filtered = allTutors.filter(t => 
+                t.userId.fullName.toLowerCase().includes(query) ||
+                t.userId.email.toLowerCase().includes(query)
+            );
+            displayTutors(filtered);
+        }
+
+        function searchBookings() {
+            const query = document.getElementById('bookingSearch').value.toLowerCase();
+            const filtered = allBookings.filter(b => 
+                b.studentId.fullName.toLowerCase().includes(query) ||
+                b.tutorId.fullName.toLowerCase().includes(query) ||
+                b.subject.toLowerCase().includes(query)
+            );
+            displayBookings(filtered);
+        }
+
+        function searchUsers() {
+            const query = document.getElementById('userSearch').value.toLowerCase();
+            const filtered = allUsers.filter(u => 
+                u.fullName.toLowerCase().includes(query) ||
+                u.email.toLowerCase().includes(query)
+            );
+            displayUsers(filtered);
+        }
+
+        // Filter functions
+        function filterTutors(status) {
+            // Update button states
+            document.querySelectorAll('#tutorsTab .filter-group button').forEach(btn => {
+                btn.classList.remove('btn-primary', 'active');
+                btn.classList.add('btn-secondary');
+            });
+            event.target.classList.remove('btn-secondary');
+            event.target.classList.add('btn-primary', 'active');
+
+            let filtered = allTutors;
+            if (status === 'pending') {
+                filtered = allTutors.filter(t => !t.userId.isApproved);
+            } else if (status === 'approved') {
+                filtered = allTutors.filter(t => t.userId.isApproved);
+            }
+            displayTutors(filtered);
+        }
+
+        function filterBookings(status) {
+            // Update button states
+            document.querySelectorAll('#bookingsTab .filter-group button').forEach(btn => {
+                btn.classList.remove('btn-primary', 'active');
+                btn.classList.add('btn-secondary');
+            });
+            event.target.classList.remove('btn-secondary');
+            event.target.classList.add('btn-primary', 'active');
+
+            let filtered = allBookings;
+            if (status !== 'all') {
+                filtered = allBookings.filter(b => b.status === status);
+            }
+            displayBookings(filtered);
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            // Update tab UI
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(`${tab}Tab`).classList.add('active');
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('tutorModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>

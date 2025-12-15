@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Successful - Scopreneur Initiative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navigation */
+        nav {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 1rem 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #ff8c42;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* Status Cards */
+        .status-card {
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Success/Error Header */
+        .status-header {
+            padding: 3rem 2rem;
+            text-align: center;
+            background: linear-gradient(135deg, #48a868 0%, #38865a 100%);
+            color: #fff;
+        }
+
+        .status-header.error {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        }
+
+        .status-header.pending {
+            background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        }
+
+        .status-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .status-title {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Card Body */
+        .card-body {
+            padding: 2rem;
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-state h3 {
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-state p {
+            color: #666;
+        }
+
+        /* Booking Details */
+        .booking-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .details-title {
+            font-size: 1.5rem;
+            color: #2c5f8d;
+        }
+
+        .booking-id {
+            background: #667eea;
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .detail-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Tutor Card */
+        .tutor-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            padding: 1.5rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .tutor-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #fff;
+            color: #667eea;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .tutor-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .tutor-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Payment Summary */
+        .payment-summary {
+            background: #fff;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row.total {
+            border-top: 2px solid #e0e0e0;
+            margin-top: 0.5rem;
+            padding-top: 1rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .summary-row.total .summary-label,
+        .summary-row.total .summary-value {
+            color: #2c5f8d;
+        }
+
+        /* Next Steps */
+        .next-steps {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .next-steps h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .next-steps ul {
+            list-style: none;
+            margin-left: 0;
+        }
+
+        .next-steps li {
+            padding: 0.5rem 0;
+            color: #555;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .next-steps li:before {
+            content: "✓";
+            color: #48a868;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9fa;
+        }
+
+        .btn-success {
+            background: #48a868;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #38865a;
+        }
+
+        /* Support Info */
+        .support-info {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            color: #666;
+        }
+
+        .support-info a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .support-info a:hover {
+            text-decoration: underline;
+        }
+
+        /* Error State */
+        .error-reasons {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .error-reasons h3 {
+            color: #856404;
+            margin-bottom: 1rem;
+        }
+
+        .error-reasons ul {
+            list-style: none;
+            color: #856404;
+        }
+
+        .error-reasons li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.5rem;
+        }
+
+        .error-reasons li:before {
+            content: "•";
+            font-weight: bold;
+        }
+
+        /* Reference Number */
+        .reference-box {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 10px;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .reference-box label {
+            display: block;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .reference-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c5f8d;
+            font-family: monospace;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .status-title {
+                font-size: 2rem;
+            }
+
+            .status-icon {
+                font-size: 4rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+
+            .tutor-card {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: #fff;
+            }
+
+            nav, .action-buttons, .support-info {
+                display: none;
+            }
+
+            .status-card {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span>Scop</span>reneur Initiative
+            </div>
+            <a href="index.html" class="nav-link">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container">
+        <div class="status-card">
+            <!-- Loading State -->
+            <div id="loadingState" class="loading-state">
+                <div class="spinner"></div>
+                <h3>Verifying Payment...</h3>
+                <p>Please wait while we confirm your payment</p>
+            </div>
+
+            <!-- Success State -->
+            <div id="successState" style="display: none;">
+                <div class="status-header">
+                    <div class="status-icon">🎉</div>
+                    <h1 class="status-title">Payment Successful!</h1>
+                    <p class="status-subtitle">Your booking has been confirmed</p>
+                </div>
+
+                <div class="card-body">
+                    <!-- Reference Number -->
+                    <div class="reference-box">
+                        <label>Payment Reference</label>
+                        <div class="reference-number" id="referenceNumber">-</div>
+                    </div>
+
+                    <!-- Tutor Card -->
+                    <div class="tutor-card" id="tutorCard"></div>
+
+                    <!-- Booking Details -->
+                    <div class="booking-details">
+                        <div class="details-header">
+                            <h2 class="details-title">Booking Details</h2>
+                            <span class="booking-id" id="bookingId">-</span>
+                        </div>
+                        <div class="details-grid" id="bookingDetailsGrid"></div>
+                    </div>
+
+                    <!-- Payment Summary -->
+                    <div class="payment-summary" id="paymentSummary"></div>
+
+                    <!-- Next Steps -->
+                    <div class="next-steps">
+                        <h3>📋 What Happens Next?</h3>
+                        <ul>
+                            <li>A confirmation email has been sent to your registered email address</li>
+                            <li>Your tutor will receive a notification about this booking</li>
+                            <li>You can view and manage this booking in your dashboard</li>
+                            <li>The tutor will contact you 24 hours before the session</li>
+                            <li>For online sessions, a meeting link will be sent before the session</li>
+                        </ul>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="action-buttons">
+                        <a href="javascript:window.print()" class="btn btn-secondary">
+                            🖨️ Print Receipt
+                        </a>
+                        <a href="dashboard.html" class="btn btn-primary">
+                            📊 View Dashboard
+                        </a>
+                        <a href="browse-tutors.html" class="btn btn-success">
+                            📚 Book Another Session
+                        </a>
+                    </div>
+
+                    <!-- Support Info -->
+                    <div class="support-info">
+                        Need help? Contact us at 
+                        <a href="mailto:scopreneurinitiative@gmail.com">scopreneurinitiative@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" style="display: none;">
+                <div class="status-header error">
+                    <div class="status-icon">❌</div>
+                    <h1 class="status-title">Payment Failed</h1>
+                    <p class="status-subtitle">Your payment could not be processed</p>
+                </div>
+
+                <div class="card-body">
+                    <div class="error-reasons">
+                        <h3>Possible Reasons:</h3>
+                        <ul>
+                            <li>Insufficient funds in your account</li>
+                            <li>Payment was cancelled</li>
+                            <li>Card details were incorrect</li>
+                            <li>Network or connection issue</li>
+                            <li>Payment timeout</li>
+                        </ul>
+                    </div>
+
+                    <p style="text-align: center; margin-bottom: 2rem; color: #666;">
+                        Don't worry! No charges have been made to your account.
+                    </p>
+
+                    <div class="action-buttons">
+                        <a href="javascript:history.back()" class="btn btn-primary">
+                            ← Try Again
+                        </a>
+                        <a href="browse-tutors.html" class="btn btn-secondary">
+                            Browse Tutors
+                        </a>
+                    </div>
+
+                    <div class="support-info">
+                        Still having issues? Contact support at 
+                        <a href="mailto:scopreneurinitiative@gmail.com">scopreneurinitiative@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending State -->
+            <div id="pendingState" style="display: none;">
+                <div class="status-header pending">
+                    <div class="status-icon">⏳</div>
+                    <h1 class="status-title">Payment Pending</h1>
+                    <p class="status-subtitle">We're still processing your payment</p>
+                </div>
+
+                <div class="card-body">
+                    <div class="next-steps">
+                        <h3>ℹ️ What This Means</h3>
+                        <ul>
+                            <li>Your payment is being processed by the bank</li>
+                            <li>This usually takes a few minutes</li>
+                            <li>You'll receive an email once payment is confirmed</li>
+                            <li>Check your dashboard for status updates</li>
+                        </ul>
+                    </div>
+
+                    <div class="reference-box">
+                        <label>Transaction Reference</label>
+                        <div class="reference-number" id="pendingReference">-</div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <a href="dashboard.html" class="btn btn-primary">
+                            📊 Go to Dashboard
+                        </a>
+                        <a href="index.html" class="btn btn-secondary">
+                            🏠 Back to Home
+                        </a>
+                    </div>
+
+                    <div class="support-info">
+                        Questions? Contact us at 
+                        <a href="mailto:scopreneurinitiative@gmail.com">scopreneurinitiative@gmail.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://scopreneur-backend.onrender.com';
+
+        // Get reference from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const reference = urlParams.get('reference');
+        const trxref = urlParams.get('trxref'); // Paystack uses this
+
+        // Verify payment on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            if (reference || trxref) {
+                verifyPayment(reference || trxref);
+            } else {
+                showError('No payment reference found');
+            }
+        });
+
+        // Verify payment with backend
+        async function verifyPayment(ref) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/verify`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ reference: ref })
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.payment) {
+                    // Payment successful
+                    await loadBookingDetails(data.payment.bookingId);
+                    showSuccess(data.payment);
+                } else {
+                    // Payment failed
+                    showError(data.error || 'Payment verification failed');
+                }
+            } catch (error) {
+                console.error('Verification error:', error);
+                showError('Could not verify payment. Please contact support.');
+            }
+        }
+
+        // Load booking details
+        async function loadBookingDetails(bookingId) {
+            try {
+                const token = localStorage.getItem('token');
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.booking) {
+                    displayBookingDetails(data.booking);
+                }
+            } catch (error) {
+                console.error('Error loading booking:', error);
+            }
+        }
+
+        // Display booking details
+        function displayBookingDetails(booking) {
+            // Booking ID
+            document.getElementById('bookingId').textContent = `#${booking._id.substring(0, 8).toUpperCase()}`;
+
+            // Tutor Card
+            const tutorCard = document.getElementById('tutorCard');
+            const initials = booking.tutorId.fullName.split(' ').map(n => n[0]).join('').substring(0, 2);
+            tutorCard.innerHTML = `
+                <div class="tutor-avatar">${initials}</div>
+                <div class="tutor-info">
+                    <h3>${booking.tutorId.fullName}</h3>
+                    <div class="tutor-meta">
+                        <span>📧 ${booking.tutorId.email}</span>
+                        <span>📞 ${booking.tutorId.phone}</span>
+                    </div>
+                </div>
+            `;
+
+            // Booking Details
+            const detailsGrid = document.getElementById('bookingDetailsGrid');
+            const date = new Date(booking.date);
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            
+            detailsGrid.innerHTML = `
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">📚</span>Category</span>
+                    <span class="detail-value">${formatCategory(booking.category)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">📖</span>Subject</span>
+                    <span class="detail-value">${booking.subject}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">${booking.sessionType === 'online' ? '💻' : '👥'}</span>Session Type</span>
+                    <span class="detail-value">${booking.sessionType === 'online' ? 'Online' : 'In-Person'}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">📅</span>Date</span>
+                    <span class="detail-value">${date.toLocaleDateString('en-US', options)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">🕐</span>Time</span>
+                    <span class="detail-value">${formatTime(booking.time)}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">⏱️</span>Duration</span>
+                    <span class="detail-value">${booking.duration} Hour${booking.duration > 1 ? 's' : ''}</span>
+                </div>
+                ${booking.location ? `
+                <div class="detail-item">
+                    <span class="detail-label"><span class="detail-icon">📍</span>Location</span>
+                    <span class="detail-value">${booking.location}</span>
+                </div>
+                ` : ''}
+                ${booking.notes ? `
+                <div class="detail-item" style="grid-column: 1 / -1;">
+                    <span class="detail-label"><span class="detail-icon">📝</span>Notes</span>
+                    <span class="detail-value">${booking.notes}</span>
+                </div>
+                ` : ''}
+            `;
+
+            // Payment Summary
+            const paymentSummary = document.getElementById('paymentSummary');
+            paymentSummary.innerHTML = `
+                <div class="summary-row">
+                    <span class="summary-label">Tutor Fee (${booking.duration} hour${booking.duration > 1 ? 's' : ''})</span>
+                    <span class="summary-value">₦${booking.tutorEarnings.toLocaleString()}</span>
+                </div>
+                <div class="summary-row">
+                    <span class="summary-label">Platform Fee (15%)</span>
+                    <span class="summary-value">₦${booking.commission.toLocaleString()}</span>
+                </div>
+                <div class="summary-row total">
+                    <span class="summary-label">Total Paid</span>
+                    <span class="summary-value">₦${booking.totalAmount.toLocaleString()}</span>
+                </div>
+            `;
+        }
+
+        // Show success state
+        function showSuccess(payment) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('pendingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'block';
+
+            // Set reference number
+            document.getElementById('referenceNumber').textContent = payment.reference;
+        }
+
+        // Show error state
+        function showError(message) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'none';
+            document.getElementById('pendingState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'block';
+        }
+
+        // Show pending state
+        function showPending(reference) {
+            document.getElementById('loadingState').style.display = 'none';
+            document.getElementById('successState').style.display = 'none';
+            document.getElementById('errorState').style.display = 'none';
+            document.getElementById('pendingState').style.display = 'block';
+
+            document.getElementById('pendingReference').textContent = reference;
+        }
+
+        // Format category
+        function formatCategory(category) {
+            const names = {
+                'academic': 'Academic',
+                'digital-skills': 'Digital Skills',
+                'entrepreneurship': 'Entrepreneurship'
+            };
+            return names[category] || category;
+        }
+
+        // Format time
+        function formatTime(timeStr) {
+            const [hour, min] = timeStr.split(':').map(Number);
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+            return `${displayHour}:${min.toString().padStart(2, '0')} ${period}`;
+        }
+    </script>
+</body>
+</html>

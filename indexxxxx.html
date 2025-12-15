@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scopreneur Initiative - Empowering Youth Through Education & Entrepreneurship</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c5f8d 0%, #1e4d6b 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #ff8c42;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: #ff8c42;
+        }
+
+        .nav-links a.active {
+            color: #ff8c42;
+            border-bottom: 2px solid #ff8c42;
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 6rem 2rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-button {
+            background: #ff8c42;
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: #ff7029;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Introduction */
+        .intro {
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .intro h2 {
+            font-size: 2.5rem;
+            color: #2c5f8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .intro p {
+            font-size: 1.2rem;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto 1rem auto;
+        }
+
+        .age-badge {
+            display: inline-block;
+            background: #ff8c42;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        /* Services Overview */
+        .services-overview {
+            background: #fff;
+        }
+
+        .services-overview h2 {
+            font-size: 2.5rem;
+            color: #2c5f8d;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .service-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 2.5rem;
+            border-radius: 15px;
+            transition: all 0.3s;
+            border-left: 5px solid #2c5f8d;
+        }
+
+        .service-card:nth-child(2) {
+            border-left-color: #48a868;
+        }
+
+        .service-card:nth-child(3) {
+            border-left-color: #764ba2;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .service-card h3 {
+            font-size: 1.8rem;
+            color: #2c5f8d;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: #555;
+            margin-bottom: 1rem;
+        }
+
+        .service-card ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .service-card ul li {
+            padding: 0.5rem 0;
+            color: #666;
+        }
+
+        .service-card ul li:before {
+            content: "✓ ";
+            color: #48a868;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: #f8f9fa;
+        }
+
+        .testimonials h2 {
+            font-size: 2.5rem;
+            color: #2c5f8d;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .testimonials-note {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            margin-bottom: 2rem;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .testimonial-placeholder {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px dashed #ddd;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(135deg, #2c5f8d 0%, #1e4d6b 100%);
+            color: #fff;
+        }
+
+        .contact h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: #ff8c42;
+        }
+
+        .contact-info p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .email-link {
+            color: #ff8c42;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .email-link:hover {
+            color: #fff;
+        }
+
+        .contact-form {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            background: #ff8c42;
+            color: #fff;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .submit-button:hover {
+            background: #ff7029;
+        }
+
+        /* Inner Pages */
+        .page-header {
+            background: linear-gradient(135deg, #2c5f8d 0%, #1e4d6b 100%);
+            color: #fff;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .page-header p {
+            font-size: 1.3rem;
+            opacity: 0.9;
+        }
+
+        .content-section {
+            padding: 4rem 2rem;
+        }
+
+        .content-section h2 {
+            font-size: 2rem;
+            color: #2c5f8d;
+            margin-bottom: 1.5rem;
+        }
+
+        .content-section h3 {
+            font-size: 1.5rem;
+            color: #48a868;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .content-section p, .content-section ul {
+            color: #555;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .content-section ul {
+            list-style: none;
+            margin-left: 1rem;
+        }
+
+        .content-section ul li {
+            padding: 0.5rem 0;
+        }
+
+        .content-section ul li:before {
+            content: "→ ";
+            color: #ff8c42;
+            font-weight: bold;
+            margin-right: 0.5rem;
+        }
+
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .subject-box {
+            background: #f8f9fa;
+            padding: 2rem;
+            border-radius: 10px;
+            border-left: 4px solid #ff8c42;
+            transition: all 0.3s;
+        }
+
+        .subject-box:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .subject-box h4 {
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .resource-card {
+            background: #fff;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border-left: 4px solid #764ba2;
+        }
+
+        .resource-card h4 {
+            color: #2c5f8d;
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        .resource-link {
+            color: #ff8c42;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .resource-link:hover {
+            color: #764ba2;
+        }
+
+        /* Footer */
+        footer {
+            background: #1e4d6b;
+            color: #fff;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">Scop<span>reneur</span> Initiative</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
+                <li><a href="#" onclick="showPage('academic')">Academic</a></li>
+                <li><a href="#" onclick="showPage('digital')">Digital Skills</a></li>
+                <li><a href="#" onclick="showPage('entrepreneurship')">Entrepreneurship</a></li>
+                <li><a href="#" onclick="showPage('resources')">Resources</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- HOME PAGE -->
+    <div id="home" class="page active">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Empowering Young Minds to Excel Academically and Thrive Entrepreneurially</h1>
+                <p>Transforming students aged 10-18 into confident learners, skilled innovators, and future leaders through personalized education and entrepreneurial guidance.</p>
+                <a href="#contact" class="cta-button">Start Your Journey Today</a>
+            </div>
+        </section>
+
+        <!-- Introduction -->
+        <section class="intro">
+            <div class="container">
+                <h2>Welcome to Scopreneur Initiative</h2>
+                <p>I am a dedicated tutor passionate about nurturing the next generation of thinkers, creators, and entrepreneurs. Through comprehensive academic support, cutting-edge digital skills training, and entrepreneurial empowerment, I help students discover their potential and build the confidence to pursue their dreams.</p>
+                <p>My mission is to provide personalized, holistic education that goes beyond textbooks—equipping young people with the knowledge, skills, and mindset to succeed in an ever-changing world.</p>
+                <div class="age-badge">For Ages 10-18 | Secondary School Students</div>
+            </div>
+        </section>
+
+        <!-- Services Overview -->
+        <section class="services-overview">
+            <div class="container">
+                <h2>What I Offer</h2>
+                <div class="services-grid">
+                    <!-- Academic -->
+                    <div class="service-card">
+                        <h3>📚 Academic Excellence</h3>
+                        <p>Build a strong foundation in core subjects with personalized tutoring that makes learning engaging and effective.</p>
+                        <ul>
+                            <li>Mathematics</li>
+                            <li>English Language</li>
+                            <li>Science</li>
+                        </ul>
+                    </div>
+
+                    <!-- Digital Skills -->
+                    <div class="service-card">
+                        <h3>💻 Digital Skills</h3>
+                        <p>Master the technologies shaping our future with hands-on training in high-demand skills.</p>
+                        <ul>
+                            <li>Coding & Programming</li>
+                            <li>Web & Mobile App Development</li>
+                            <li>Video & Audio Editing</li>
+                            <li>Data Analytics (Excel)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Entrepreneurship -->
+                    <div class="service-card">
+                        <h3>🚀 Entrepreneurship</h3>
+                        <p>Connect with entrepreneurship centers and develop the mindset and skills to turn ideas into reality.</p>
+                        <ul>
+                            <li>Teen Empowerment Programs</li>
+                            <li>Entrepreneurial Mindset Development</li>
+                            <li>Connections to Learning Centers</li>
+                            <li>Spiritual Growth & Life Skills</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="testimonials">
+            <div class="container">
+                <h2>Success Stories</h2>
+                <p class="testimonials-note">Testimonials from parents and students (Images will be added here)</p>
+                <div class="testimonials-grid">
+                    <div class="testimonial-placeholder">
+                        <p>Testimonial Image 1</p>
+                    </div>
+                    <div class="testimonial-placeholder">
+                        <p>Testimonial Image 2</p>
+                    </div>
+                    <div class="testimonial-placeholder">
+                        <p>Testimonial Image 3</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact" id="contact">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <div class="contact-content">
+                    <div class="contact-info">
+                        <h3>Let's Connect</h3>
+                        <p>Ready to start your learning journey? Have questions about my programs? I'd love to hear from you!</p>
+                        <p>Email me directly at:</p>
+                        <a href="mailto:scopreneurinitiative@gmail.com" class="email-link">scopreneurinitiative@gmail.com</a>
+                    </div>
+                    <div class="contact-form">
+                        <form onsubmit="handleSubmit(event)">
+                            <div class="form-group">
+                                <label for="name">Your Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Your Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required></textarea>
+                            </div>
+                            <button type="submit" class="submit-button">Send Message</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ACADEMIC PAGE -->
+    <div id="academic" class="page">
+        <div class="page-header">
+            <h1>Academic Excellence</h1>
+            <p>Building strong foundations in Mathematics, English, and Science</p>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <h2>Personalized Academic Tutoring</h2>
+                <p>I provide one-on-one and small group tutoring designed to help students aged 10-18 excel in their core subjects. My teaching approach is student-centered, interactive, and focused on building both knowledge and confidence.</p>
+
+                <div class="subjects-grid">
+                    <div class="subject-box">
+                        <h4>📐 Mathematics</h4>
+                        <p>From basic arithmetic to advanced algebra and geometry, I make math accessible and enjoyable.</p>
+                    </div>
+                    <div class="subject-box">
+                        <h4>📖 English Language</h4>
+                        <p>Improve reading comprehension, writing skills, grammar, and verbal communication.</p>
+                    </div>
+                    <div class="subject-box">
+                        <h4>🔬 Science</h4>
+                        <p>Explore biology, chemistry, and physics with hands-on learning and real-world applications.</p>
+                    </div>
+                </div>
+
+                <h3>My Teaching Approach</h3>
+                <ul>
+                    <li>Customized lesson plans tailored to each student's learning style and pace</li>
+                    <li>Regular assessments to track progress and identify areas for improvement</li>
+                    <li>Interactive teaching methods that make learning engaging and memorable</li>
+                    <li>Homework support and exam preparation strategies</li>
+                    <li>Building critical thinking and problem-solving skills</li>
+                </ul>
+
+                <h3>Who This Is For</h3>
+                <p>My academic tutoring is perfect for secondary school students who want to:</p>
+                <ul>
+                    <li>Improve their grades and academic performance</li>
+                    <li>Gain confidence in challenging subjects</li>
+                    <li>Prepare for important exams</li>
+                    <li>Develop strong study habits and learning strategies</li>
+                    <li>Get ahead in their studies</li>
+                </ul>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="mailto:scopreneurinitiative@gmail.com" class="cta-button">Inquire About Academic Tutoring</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DIGITAL SKILLS PAGE -->
+    <div id="digital" class="page">
+        <div class="page-header">
+            <h1>Digital Skills Training</h1>
+            <p>Master the technologies shaping tomorrow</p>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <h2>Future-Ready Skills for Young Innovators</h2>
+                <p>In today's digital world, technical skills are essential. I offer comprehensive training in high-demand digital skills that prepare students for the future of work and entrepreneurship.</p>
+
+                <h3>💻 Coding & Programming</h3>
+                <p>Learn to code with beginner-friendly languages and progress to more advanced concepts. Students will build real projects and understand programming logic.</p>
+                <ul>
+                    <li>Introduction to programming concepts</li>
+                    <li>HTML, CSS, and JavaScript fundamentals</li>
+                    <li>Python programming</li>
+                    <li>Problem-solving through code</li>
+                </ul>
+
+                <h3>🌐 Web Development</h3>
+                <p>Build beautiful, functional websites from scratch. Learn both front-end design and back-end functionality.</p>
+                <ul>
+                    <li>Responsive web design</li>
+                    <li>Modern web frameworks and tools</li>
+                    <li>Building interactive websites</li>
+                    <li>Portfolio development</li>
+                </ul>
+
+                <h3>📱 Mobile App Development</h3>
+                <p>Create apps for Android and iOS platforms. Turn your ideas into functional mobile applications.</p>
+                <ul>
+                    <li>Mobile app design principles</li>
+                    <li>App development fundamentals</li>
+                    <li>Building and testing apps</li>
+                    <li>Publishing your first app</li>
+                </ul>
+
+                <h3>🎬 Video & Audio Editing</h3>
+                <p>Master the art of digital content creation. Learn professional editing techniques for video and audio.</p>
+                <ul>
+                    <li>Video editing software (Adobe Premiere, Final Cut, etc.)</li>
+                    <li>Audio production and editing</li>
+                    <li>Color grading and effects</li>
+                    <li>Storytelling through media</li>
+                </ul>
+
+                <h3>📊 Data Analytics (Excel)</h3>
+                <p>Unlock the power of data. Learn to analyze, visualize, and make decisions based on data.</p>
+                <ul>
+                    <li>Excel fundamentals to advanced functions</li>
+                    <li>Data visualization and charts</li>
+                    <li>Formulas, pivot tables, and macros</li>
+                    <li>Data-driven decision making</li>
+                </ul>
+
+                <h3>🛠️ Tech & Technology Literacy</h3>
+                <p>Understand how technology works and how to use it effectively and safely.</p>
+                <ul>
+                    <li>Digital literacy and online safety</li>
+                    <li>Productivity tools and software</li>
+                    <li>Cloud computing basics</li>
+                    <li>Tech troubleshooting</li>
+                </ul>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="mailto:scopreneurinitiative@gmail.com" class="cta-button">Start Learning Digital Skills</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ENTREPRENEURSHIP PAGE -->
+    <div id="entrepreneurship" class="page">
+        <div class="page-header">
+            <h1>Entrepreneurship & Empowerment</h1>
+            <p>Connecting teens with opportunities to learn, grow, and lead</p>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <h2>Building Tomorrow's Entrepreneurs Today</h2>
+                <p>Entrepreneurship is more than starting a business—it's a mindset of creativity, resilience, and problem-solving. I connect young people with entrepreneurship centers and programs where they can develop these essential skills.</p>
+
+                <h3>🎯 What I Offer</h3>
+                <ul>
+                    <li>Connections to reputable entrepreneurship centers and programs</li>
+                    <li>Guidance on finding the right opportunities for your interests</li>
+                    <li>Mentorship on developing an entrepreneurial mindset</li>
+                    <li>Support in exploring business ideas and innovation</li>
+                    <li>Resources for teen entrepreneurs</li>
+                </ul>
+
+                <h3>💡 Teen Empowerment Programs</h3>
+                <p>I work with various entrepreneurship centers that offer:</p>
+                <ul>
+                    <li>Business development workshops</li>
+                    <li>Innovation and design thinking training</li>
+                    <li>Leadership development programs</li>
+                    <li>Pitch competitions and startup challenges</li>
+                    <li>Networking with other young entrepreneurs</li>
+                    <li>Access to mentors and industry professionals</li>
+                </ul>
+
+                <h3>🌱 Life & Spiritual Growth</h3>
+                <p>Beyond business skills, I believe in holistic development. Through my Telegram channel "Daily Growth In Grace," I share insights on:</p>
+                <ul>
+                    <li>Character development and integrity</li>
+                    <li>Purpose and vision for life</li>
+                    <li>Faith and spiritual maturity</li>
+                    <li>Practical wisdom for daily living</li>
+                    <li>Building healthy relationships and communication</li>
+                </ul>
+                <p><strong>Join the community:</strong> <a href="https://t.me/DailyGrowthInGrace" target="_blank" class="resource-link">t.me/DailyGrowthInGrace</a></p>
+
+                <h3>📈 Who This Is For</h3>
+                <p>This program is ideal for teens who:</p>
+                <ul>
+                    <li>Have a business idea they want to explore</li>
+                    <li>Are curious about entrepreneurship</li>
+                    <li>Want to develop leadership skills</li>
+                    <li>Seek mentorship and guidance</li>
+                    <li>Want to be part of a community of young innovators</li>
+                </ul>
+
+                <div style="text-align: center; margin-top: 3rem;">
+                    <a href="mailto:scopreneurinitiative@gmail.com" class="cta-button">Explore Entrepreneurship Opportunities</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RESOURCES PAGE -->
+    <div id="resources" class="page">
+        <div class="page-header">
+            <h1>Resources & Materials</h1>
+            <p>Free tools, links, and materials to support your learning journey</p>
+        </div>
+        <div class="content-section">
+            <div class="container">
+                <h2>Learning Resources</h2>
+                <p>Here you'll find helpful resources, links to learning materials, and ways to stay connected with the Scopreneur Initiative community.</p>
+
+                <div class="resource-card">
+                    <h4>📻 Daily Growth In Grace (Telegram Channel)</h4>
+                    <p>Join our Telegram community for daily audio teachings on life, faith, and godliness. Grow spiritually while developing your academic and entrepreneurial skills.</p>
+                    <p><a href="https://t.me/DailyGrowthInGrace" target="_blank" class="resource-link">Join Channel: t.me/DailyGrowthInGrace</a></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>📚 Free Learning Materials</h4>
+                    <p>Access study guides, practice worksheets, and reference materials for various subjects.</p>
+                    <p><em>(Materials will be uploaded here soon. Check back regularly for updates!)</em></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>💻 Coding Resources</h4>
+                    <p>Helpful links and tools for learning to code and build projects.</p>
+                    <ul>
+                        <li>Recommended coding platforms and tutorials</li>
+                        <li>Practice exercises and challenges</li>
+                        <li>Free development tools</li>
+                        <li>Project ideas for beginners</li>
+                    </ul>
+                    <p><em>(Curated list coming soon!)</em></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🎓 Educational Links</h4>
+                    <p>External resources to supplement your learning in various subjects.</p>
+                    <ul>
+                        <li>Math practice websites</li>
+                        <li>Science learning platforms</li>
+                        <li>English language resources</li>
+                        <li>Educational YouTube channels</li>
+                    </ul>
+                    <p><em>(Links will be added here soon!)</em></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>📝 Blog & Articles</h4>
+                    <p>Read insights on education, technology, entrepreneurship, and personal development.</p>
+                    <p><em>(Blog posts coming soon! Topics will include study tips, career advice, tech trends, and more.)</em></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>🌟 Success Stories & Testimonials</h4>
+                    <p>Be inspired by students who have excelled through the Scopreneur Initiative.</p>
+                    <p><em>(Testimonials will be featured here as images and written reviews.)</em></p>
+                </div>
+
+                <div class="resource-card">
+                    <h4>📥 Downloadable Materials</h4>
+                    <p>Download study guides, templates, and other helpful documents.</p>
+                    <ul>
+                        <li>Study planners and organizers</li>
+                        <li>Exam preparation checklists</li>
+                        <li>Project templates</li>
+                        <li>Goal-setting worksheets</li>
+                    </ul>
+                    <p><em>(Downloads coming soon!)</em></p>
+                </div>
+
+                <h3 style="margin-top: 3rem; text-align: center;">Stay Connected</h3>
+                <p style="text-align: center;">For the latest updates, resources, and opportunities, reach out via email:</p>
+                <p style="text-align: center; margin-top: 1rem;">
+                    <a href="mailto:scopreneurinitiative@gmail.com" class="resource-link" style="font-size: 1.2rem;">scopreneurinitiative@gmail.com</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Scopreneur Initiative. Empowering Youth Through Education & Entrepreneurship.</p>
+        <p>Contact: <a href="mailto:scopreneurinitiative@gmail.com" style="color: #ff8c42; text-decoration: none;">scopreneurinitiative@gmail.com</a></p>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-links a');
+            navLinks.forEach(link => link.classList.remove('active'));
+
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Create mailto link with form data
+            const subject = encodeURIComponent('Inquiry from ' + name);
+            const body = encodeURIComponent(
+                'Name: ' + name + '\n' +
+                'Email: ' + email + '\n\n' +
+                'Message:\n' + message
+            );
+            
+            window.location.href = 'mailto:scopreneurinitiative@gmail.com?subject=' + subject + '&body=' + body;
+            
+            // Clear form
+            event.target.reset();
+            alert('Your email client will open. Please send the message to complete your inquiry.');
+        }
+
+        // Smooth scroll for CTA buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const ctaButton = document.querySelector('.hero .cta-button');
+            if (ctaButton) {
+                ctaButton.addEventListener('click', function(e) {
+                    if (this.getAttribute('href') === '#contact') {
+                        e.preventDefault();
+                        document.querySelector('#contact').scrollIntoView({ 
+                            behavior: 'smooth' 
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

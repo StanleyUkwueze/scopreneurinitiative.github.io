@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Browse Tutors - Scopreneur Initiative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c5f8d 0%, #1e4d6b 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #ff8c42;
+        }
+
+        .nav-back {
+            color: #fff;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-back:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Page Header */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Filter Section */
+        .filters-section {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .filters-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters-header h2 {
+            color: #2c5f8d;
+            font-size: 1.5rem;
+        }
+
+        .clear-filters {
+            background: none;
+            border: 2px solid #ff8c42;
+            color: #ff8c42;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .clear-filters:hover {
+            background: #ff8c42;
+            color: #fff;
+        }
+
+        .filters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .filter-group label {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .filter-group select, .filter-group input {
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .filter-group select:focus, .filter-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .search-box {
+            grid-column: 1 / -1;
+        }
+
+        .search-box input {
+            width: 100%;
+        }
+
+        /* Results Header */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-count {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .results-count strong {
+            color: #2c5f8d;
+        }
+
+        .sort-by {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sort-by select {
+            padding: 0.6rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* Tutors Grid */
+        .tutors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .tutor-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .tutor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .tutor-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            text-align: center;
+            color: #fff;
+        }
+
+        .tutor-avatar {
+            width: 100px;
+            height: 100px;
+            background: #fff;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .tutor-name {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+
+        .tutor-rating {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .stars {
+            color: #ffc107;
+        }
+
+        .tutor-body {
+            padding: 1.5rem;
+        }
+
+        .tutor-info {
+            margin-bottom: 1rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            color: #666;
+        }
+
+        .info-icon {
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .tutor-bio {
+            color: #555;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .tutor-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .category-badge {
+            background: #e9ecef;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2c5f8d;
+        }
+
+        .category-badge.academic {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .category-badge.digital-skills {
+            background: #e8f5e9;
+            color: #388e3c;
+        }
+
+        .category-badge.entrepreneurship {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .tutor-subjects {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .tutor-subjects strong {
+            color: #333;
+        }
+
+        .tutor-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .tutor-rate {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2c5f8d;
+        }
+
+        .tutor-rate small {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: normal;
+        }
+
+        .book-btn {
+            background: linear-gradient(135deg, #ff8c42 0%, #ff7029 100%);
+            color: #fff;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 140, 66, 0.4);
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #fff;
+            border-radius: 15px;
+        }
+
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #666;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            overflow-y: auto;
+        }
+
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .modal-content {
+            background: #fff;
+            border-radius: 20px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            font-size: 1.8rem;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+
+        .close-modal:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .tutor-detail-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .tutor-detail-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .tutor-detail-name {
+            font-size: 2rem;
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .tutor-detail-rating {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .detail-section {
+            margin-bottom: 2rem;
+        }
+
+        .detail-section h3 {
+            color: #2c5f8d;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .detail-section p {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .detail-item strong {
+            display: block;
+            color: #2c5f8d;
+            margin-bottom: 0.3rem;
+        }
+
+        .subjects-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .subject-tag {
+            background: #667eea;
+            color: #fff;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+
+        .session-types {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .session-type-badge {
+            background: #e9ecef;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-footer {
+            padding: 2rem;
+            border-top: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-display {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #2c5f8d;
+        }
+
+        .book-now-btn {
+            background: linear-gradient(135deg, #ff8c42 0%, #ff7029 100%);
+            color: #fff;
+            border: none;
+            padding: 1rem 3rem;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .book-now-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(255, 140, 66, 0.4);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .filters-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tutors-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .results-header {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .modal-content {
+                margin: 1rem;
+            }
+
+            .modal-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo"><span>Scop</span>reneur Initiative</div>
+            <a href="index.html" class="nav-back">← Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <div class="page-header">
+        <h1>Browse Expert Tutors</h1>
+        <p>Find the perfect tutor for your learning journey</p>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Filters Section -->
+        <div class="filters-section">
+            <div class="filters-header">
+                <h2>🔍 Filter Tutors</h2>
+                <button class="clear-filters" onclick="clearFilters()">Clear All</button>
+            </div>
+            <div class="filters-grid">
+                <div class="filter-group search-box">
+                    <label for="searchInput">Search by name or subject</label>
+                    <input type="text" id="searchInput" placeholder="e.g., Mathematics, Python, John" oninput="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter" onchange="applyFilters()">
+                        <option value="">All Categories</option>
+                        <option value="academic">Academic</option>
+                        <option value="digital-skills">Digital Skills</option>
+                        <option value="entrepreneurship">Entrepreneurship</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="sessionTypeFilter">Session Type</label>
+                    <select id="sessionTypeFilter" onchange="applyFilters()">
+                        <option value="">All Types</option>
+                        <option value="online">Online</option>
+                        <option value="in-person">In-Person</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="minRate">Min Rate (₦)</label>
+                    <input type="number" id="minRate" placeholder="0" min="0" oninput="applyFilters()">
+                </div>
+                <div class="filter-group">
+                    <label for="maxRate">Max Rate (₦)</label>
+                    <input type="number" id="maxRate" placeholder="Any" min="0" oninput="applyFilters()">
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Header -->
+        <div class="results-header">
+            <div class="results-count">
+                Showing <strong id="resultsCount">0</strong> tutors
+            </div>
+            <div class="sort-by">
+                <label for="sortBy">Sort by:</label>
+                <select id="sortBy" onchange="applySort()">
+                    <option value="rating">Highest Rated</option>
+                    <option value="rate-low">Price: Low to High</option>
+                    <option value="rate-high">Price: High to Low</option>
+                    <option value="sessions">Most Sessions</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading">
+            <div class="spinner"></div>
+            <p>Loading tutors...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">🔍</div>
+            <h3>No tutors found</h3>
+            <p>Try adjusting your filters or search terms</p>
+        </div>
+
+        <!-- Tutors Grid -->
+        <div id="tutorsGrid" class="tutors-grid"></div>
+    </div>
+
+    <!-- Tutor Detail Modal -->
+    <div id="tutorModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tutor Details</h2>
+                <button class="close-modal" onclick="closeModal()">×</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Content loaded dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'https://scopreneur-backend.onrender.com'; // Change to your backend URL
+        
+        let allTutors = [];
+        let filteredTutors = [];
+
+        // Load tutors on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadTutors();
+        });
+
+        // Load all tutors
+        async function loadTutors() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/tutors`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    allTutors = data.tutors;
+                    filteredTutors = allTutors;
+                    displayTutors(filteredTutors);
+                } else {
+                    showEmptyState();
+                }
+            } catch (error) {
+                console.error('Error loading tutors:', error);
+                showEmptyState();
+            } finally {
+                document.getElementById('loadingState').style.display = 'none';
+            }
+        }
+
+        // Display tutors
+        function displayTutors(tutors) {
+            const grid = document.getElementById('tutorsGrid');
+            const emptyState = document.getElementById('emptyState');
+            const resultsCount = document.getElementById('resultsCount');
+
+            resultsCount.textContent = tutors.length;
+
+            if (tutors.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            grid.innerHTML = tutors.map(tutor => createTutorCard(tutor)).join('');
+        }
+
+        // Create tutor card HTML
+        function createTutorCard(tutor) {
+            const initials = tutor.userId.fullName.split(' ').map(n => n[0]).join('').substring(0, 2);
+            const rating = tutor.rating || 0;
+            const stars = '⭐'.repeat(Math.round(rating));
+            
+            const categories = tutor.categories.map(cat => 
+                `<span class="category-badge ${cat}">${formatCategory(cat)}</span>`
+            ).join('');
+
+            const subjects = tutor.subjects.slice(0, 3).join(', ') + 
+                (tutor.subjects.length > 3 ? ` +${tutor.subjects.length - 3} more` : '');
+
+            return `
+                <div class="tutor-card" onclick="openTutorModal('${tutor.userId._id}')">
+                    <div class="tutor-header">
+                        <div class="tutor-avatar">${initials}</div>
+                        <div class="tutor-name">${tutor.userId.fullName}</div>
+                        <div class="tutor-rating">
+                            <span class="stars">${stars || '☆☆☆☆☆'}</span>
+                            <span>${rating.toFixed(1)} (${tutor.totalRatings} reviews)</span>
+                        </div>
+                    </div>
+                    <div class="tutor-body">
+                        <div class="tutor-info">
+                            <div class="info-row">
+                                <span class="info-icon">🎓</span>
+                                <span>${tutor.qualifications}</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-icon">📊</span>
+                                <span>${tutor.totalSessions} sessions completed</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-icon">💼</span>
+                                <span>${tutor.experience}</span>
+                            </div>
+                        </div>
+                        <div class="tutor-bio">${tutor.bio}</div>
+                        <div class="tutor-categories">${categories}</div>
+                        <div class="tutor-subjects">
+                            <strong>Subjects:</strong> ${subjects}
+                        </div>
+                        <div class="tutor-footer">
+                            <div class="tutor-rate">
+                                ₦${tutor.hourlyRate.toLocaleString()}<small>/hour</small>
+                            </div>
+                            <button class="book-btn" onclick="event.stopPropagation(); bookTutor('${tutor.userId._id}')">
+                                Book Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Format category name
+        function formatCategory(category) {
+            const names = {
+                'academic': 'Academic',
+                'digital-skills': 'Digital Skills',
+                'entrepreneurship': 'Entrepreneurship'
+            };
+            return names[category] || category;
+        }
+
+        // Apply filters
+        function applyFilters() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const category = document.getElementById('categoryFilter').value;
+            const sessionType = document.getElementById('sessionTypeFilter').value;
+            const minRate = parseInt(document.getElementById('minRate').value) || 0;
+            const maxRate = parseInt(document.getElementById('maxRate').value) || Infinity;
+
+            filteredTutors = allTutors.filter(tutor => {
+                // Search filter
+                const matchesSearch = !search || 
+                    tutor.userId.fullName.toLowerCase().includes(search) ||
+                    tutor.subjects.some(s => s.toLowerCase().includes(search)) ||
+                    tutor.bio.toLowerCase().includes(search);
+
+                // Category filter
+                const matchesCategory = !category || tutor.categories.includes(category);
+
+                // Session type filter
+                const matchesSessionType = !sessionType || tutor.sessionTypes.includes(sessionType);
+
+                // Rate filter
+                const matchesRate = tutor.hourlyRate >= minRate && tutor.hourlyRate <= maxRate;
+
+                return matchesSearch && matchesCategory && matchesSessionType && matchesRate;
+            });
+
+            applySort();
+        }
+
+        // Apply sorting
+        function applySort() {
+            const sortBy = document.getElementById('sortBy').value;
+
+            filteredTutors.sort((a, b) => {
+                switch(sortBy) {
+                    case 'rating':
+                        return b.rating - a.rating;
+                    case 'rate-low':
+                        return a.hourlyRate - b.hourlyRate;
+                    case 'rate-high':
+                        return b.hourlyRate - a.hourlyRate;
+                    case 'sessions':
+                        return b.totalSessions - a.totalSessions;
+                    default:
+                        return 0;
+                }
+            });
+
+            displayTutors(filteredTutors);
+        }
+
+        // Clear filters
+        function clearFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('categoryFilter').value = '';
+            document.getElementById('sessionTypeFilter').value = '';
+            document.getElementById('minRate').value = '';
+            document.getElementById('maxRate').value = '';
+            filteredTutors = allTutors;
+            displayTutors(filteredTutors);
+        }
+
+        // Show empty state
+        function showEmptyState() {
+            document.getElementById('tutorsGrid').innerHTML = '';
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('resultsCount').textContent = '0';
+        }
+
+        // Open tutor modal
+        async function openTutorModal(tutorId) {
+            const modal = document.getElementById('tutorModal');
+            const modalBody = document.getElementById('modalBody');
+
+            // Find tutor data
+            const tutor = allTutors.find(t => t.userId._id === tutorId);
+            
+            if (!tutor) return;
+
+            const initials = tutor.userId.fullName.split(' ').map(n => n[0]).join('').substring(0, 2);
+            const rating = tutor.rating || 0;
+            const stars = '⭐'.repeat(Math.round(rating));
+
+            const categories = tutor.categories.map(cat => 
+                `<span class="category-badge ${cat}">${formatCategory(cat)}</span>`
+            ).join('');
+
+            const subjects = tutor.subjects.map(s => 
+                `<span class="subject-tag">${s}</span>`
+            ).join('');
+
+            const sessionTypes = tutor.sessionTypes.map(type => 
+                `<span class="session-type-badge">
+                    ${type === 'online' ? '💻' : '👥'} ${type === 'online' ? 'Online' : 'In-Person'}
+                </span>`
+            ).join('');
+
+            modalBody.innerHTML = `
+                <div class="tutor-detail-header">
+                    <div class="tutor-detail-avatar">${initials}</div>
+                    <div class="tutor-detail-name">${tutor.userId.fullName}</div>
+                    <div class="tutor-detail-rating">
+                        <span class="stars">${stars || '☆☆☆☆☆'}</span>
+                        ${rating.toFixed(1)} (${tutor.totalRatings} reviews) • ${tutor.totalSessions} sessions
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>About</h3>
+                    <p>${tutor.bio}</p>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Qualifications & Experience</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <strong>Education</strong>
+                            ${tutor.qualifications}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Experience</strong>
+                            ${tutor.experience}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Categories</h3>
+                    <div class="tutor-categories">${categories}</div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Subjects Taught</h3>
+                    <div class="subjects-list">${subjects}</div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Session Types</h3>
+                    <div class="session-types">${sessionTypes}</div>
+                </div>
+
+                <div class="detail-section">
+                    <h3>Contact</h3>
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <strong>Email</strong>
+                            ${tutor.userId.email}
+                        </div>
+                        <div class="detail-item">
+                            <strong>Phone</strong>
+                            ${tutor.userId.phone}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Add footer
+            const footer = document.createElement('div');
+            footer.className = 'modal-footer';
+            footer.innerHTML = `
+                <div class="price-display">₦${tutor.hourlyRate.toLocaleString()}/hour</div>
+                <button class="book-now-btn" onclick="bookTutor('${tutor.userId._id}')">
+                    Book This Tutor
+                </button>
+            `;
+            modalBody.appendChild(footer);
+
+            modal.classList.add('show');
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('tutorModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (e) => {
+            const modal = document.getElementById('tutorModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        // Book tutor (redirect to booking page or show booking form)
+        function bookTutor(tutorId) {
+            const token = localStorage.getItem('token');
+            
+            if (!token) {
+                alert('Please login to book a tutor');
+                window.location.href = 'index.html#login';
+                return;
+            }
+
+            // Store tutor ID for booking page
+            localStorage.setItem('selectedTutorId', tutorId);
+            
+            // Redirect to booking page (you'll create this next)
+            window.location.href = `booking.html?tutor=${tutorId}`;
+            
+            // OR show booking modal (implement this if you want inline booking)
+            // showBookingModal(tutorId);
+        }
+
+        // Example: Inline booking modal (optional)
+        function showBookingModal(tutorId) {
+            const tutor = allTutors.find(t => t.userId._id === tutorId);
+            if (!tutor) return;
+
+            // Close tutor detail modal
+            closeModal();
+
+            // Create and show booking modal
+            const bookingModal = document.createElement('div');
+            bookingModal.className = 'modal show';
+            bookingModal.innerHTML = `
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Book ${tutor.userId.fullName}</h2>
+                        <button class="close-modal" onclick="this.closest('.modal').remove()">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="bookingForm" onsubmit="submitBooking(event, '${tutorId}')">
+                            <div class="filter-group">
+                                <label for="bookingCategory">Category</label>
+                                <select id="bookingCategory" required>
+                                    ${tutor.categories.map(cat => 
+                                        `<option value="${cat}">${formatCategory(cat)}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingSubject">Subject</label>
+                                <select id="bookingSubject" required>
+                                    ${tutor.subjects.map(subj => 
+                                        `<option value="${subj}">${subj}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingSessionType">Session Type</label>
+                                <select id="bookingSessionType" required>
+                                    ${tutor.sessionTypes.map(type => 
+                                        `<option value="${type}">${type === 'online' ? 'Online' : 'In-Person'}</option>`
+                                    ).join('')}
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingDate">Date</label>
+                                <input type="date" id="bookingDate" required min="${new Date().toISOString().split('T')[0]}">
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingTime">Time</label>
+                                <input type="time" id="bookingTime" required>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingDuration">Duration (hours)</label>
+                                <select id="bookingDuration" required>
+                                    <option value="1">1 hour - ₦${tutor.hourlyRate.toLocaleString()}</option>
+                                    <option value="2">2 hours - ₦${(tutor.hourlyRate * 2).toLocaleString()}</option>
+                                    <option value="3">3 hours - ₦${(tutor.hourlyRate * 3).toLocaleString()}</option>
+                                    <option value="4">4 hours - ₦${(tutor.hourlyRate * 4).toLocaleString()}</option>
+                                </select>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingNotes">Additional Notes (Optional)</label>
+                                <textarea id="bookingNotes" rows="3" placeholder="Any specific topics or requirements?"></textarea>
+                            </div>
+
+                            <div class="filter-group">
+                                <label for="bookingLocation" id="locationLabel" style="display: none;">Location</label>
+                                <input type="text" id="bookingLocation" placeholder="Enter meeting location" style="display: none;">
+                            </div>
+
+                            <div style="margin-top: 2rem; padding-top: 2rem; border-top: 2px solid #f0f0f0;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                                    <h3>Total Amount:</h3>
+                                    <div class="price-display" id="totalAmount">₦${tutor.hourlyRate.toLocaleString()}</div>
+                                </div>
+                                <button type="submit" class="book-now-btn" style="width: 100%;">
+                                    Proceed to Payment
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(bookingModal);
+
+            // Update total when duration changes
+            document.getElementById('bookingDuration').addEventListener('change', (e) => {
+                const duration = parseInt(e.target.value);
+                const total = tutor.hourlyRate * duration;
+                document.getElementById('totalAmount').textContent = `₦${total.toLocaleString()}`;
+            });
+
+            // Show/hide location field based on session type
+            document.getElementById('bookingSessionType').addEventListener('change', (e) => {
+                const locationField = document.getElementById('bookingLocation');
+                const locationLabel = document.getElementById('locationLabel');
+                if (e.target.value === 'in-person') {
+                    locationField.style.display = 'block';
+                    locationLabel.style.display = 'block';
+                    locationField.required = true;
+                } else {
+                    locationField.style.display = 'none';
+                    locationLabel.style.display = 'none';
+                    locationField.required = false;
+                }
+            });
+        }
+
+        // Submit booking
+        async function submitBooking(event, tutorId) {
+            event.preventDefault();
+
+            const token = localStorage.getItem('token');
+            if (!token) {
+                alert('Please login to book a tutor');
+                return;
+            }
+
+            const bookingData = {
+                tutorId: tutorId,
+                category: document.getElementById('bookingCategory').value,
+                subject: document.getElementById('bookingSubject').value,
+                sessionType: document.getElementById('bookingSessionType').value,
+                date: document.getElementById('bookingDate').value,
+                time: document.getElementById('bookingTime').value,
+                duration: parseInt(document.getElementById('bookingDuration').value),
+                notes: document.getElementById('bookingNotes').value,
+                location: document.getElementById('bookingLocation').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Booking created successfully
+                    alert('Booking created! Redirecting to payment...');
+                    
+                    // Initialize payment
+                    await initializePayment(data.booking._id);
+                } else {
+                    alert(data.error || 'Booking failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Booking error:', error);
+                alert('Network error. Please check your connection and try again.');
+            }
+        }
+
+        // Initialize payment
+        async function initializePayment(bookingId) {
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/payments/initialize`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ bookingId })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Redirect to Paystack payment page
+                    window.location.href = data.authorizationUrl || data.paymentUrl;
+                } else {
+                    alert(data.error || 'Payment initialization failed.');
+                }
+            } catch (error) {
+                console.error('Payment initialization error:', error);
+                alert('Failed to initialize payment. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

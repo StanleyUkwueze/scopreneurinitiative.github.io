@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Dashboard - Scopreneur Initiative</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Navigation */
+        nav {
+            background: linear-gradient(135deg, #2c5f8d 0%, #1e4d6b 100%);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: #fff;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .logo span {
+            color: #ff8c42;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dashboard Container */
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* Welcome Section */
+        .welcome-section {
+            background: linear-gradient(135deg, #48a868 0%, #38865a 100%);
+            color: #fff;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .welcome-text h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .welcome-text p {
+            opacity: 0.9;
+        }
+
+        .profile-status {
+            text-align: right;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .status-active {
+            background: rgba(255, 255, 255, 0.3);
+            color: #fff;
+        }
+
+        .status-pending {
+            background: #ffc107;
+            color: #856404;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #fff;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-info h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #48a868;
+        }
+
+        .stat-icon {
+            font-size: 3rem;
+            opacity: 0.3;
+        }
+
+        /* Tabs */
+        .tabs {
+            background: #fff;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .tab {
+            padding: 0.8rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .tab.active {
+            background: linear-gradient(135deg, #48a868 0%, #38865a 100%);
+            color: #fff;
+        }
+
+        .tab:hover:not(.active) {
+            background: #f8f9fa;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Section Card */
+        .section-card {
+            background: #fff;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            color: #2c5f8d;
+        }
+
+        /* Booking Cards */
+        .bookings-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .booking-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            transition: all 0.3s;
+            border-left: 5px solid #48a868;
+        }
+
+        .booking-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .booking-card.pending {
+            border-left-color: #ffc107;
+        }
+
+        .booking-card.completed {
+            border-left-color: #667eea;
+        }
+
+        .booking-date {
+            text-align: center;
+            padding: 1rem;
+            background: #fff;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+
+        .date-day {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #48a868;
+        }
+
+        .date-month {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .booking-details h3 {
+            color: #2c5f8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .booking-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .student-name {
+            font-weight: 600;
+            color: #2c5f8d;
+        }
+
+        .booking-status {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-confirmed {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .status-completed {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .booking-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn-success {
+            background: #48a868;
+            color: #fff;
+        }
+
+        .btn-success:hover {
+            background: #38865a;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: #fff;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #333;
+        }
+
+        /* Earnings Section */
+        .earnings-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .earnings-card {
+            background: linear-gradient(135deg, #48a868 0%, #38865a 100%);
+            color: #fff;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .earnings-card h4 {
+            opacity: 0.9;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .earnings-amount {
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        /* Profile Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #48a868;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        /* Availability Calendar */
+        .availability-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .availability-day {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 150px 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .day-name {
+            font-weight: 600;
+            color: #2c5f8d;
+        }
+
+        .time-inputs {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .time-inputs input {
+            padding: 0.5rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 60px;
+            height: 30px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 30px;
+            transition: 0.4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            border-radius: 50%;
+            transition: 0.4s;
+        }
+
+        input:checked + .slider {
+            background-color: #48a868;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(30px);
+        }
+
+        /* Reviews Section */
+        .reviews-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .review-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 5px solid #ffc107;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .review-student {
+            font-weight: 600;
+            color: #2c5f8d;
+        }
+
+        .review-rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-text {
+            color: #555;
+            line-height: 1.8;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-state p {
+            color: #999;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #48a868;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Alert */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .booking-card {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .booking-actions {
+                flex-direction: row;
+                justify-content: center;
+            }
+
+            .welcome-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1rem;
+            }
+
+            .availability-day {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tabs {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo" onclick="window.location.href='index.html'">
+                <span>Scop</span>reneur Initiative
+            </div>
+            <div class="nav-menu">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="javascript:logout()" class="nav-link">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard">
+        <!-- Alert -->
+        <div id="alertBox" class="alert"></div>
+
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <div class="welcome-content">
+                <div class="welcome-text">
+                    <h1>Welcome, <span id="tutorName">Tutor</span>! 👋</h1>
+                    <p>Manage your bookings and track your teaching progress</p>
+                </div>
+                <div class="profile-status">
+                    <div>⭐ <span id="tutorRating">0.0</span> Rating</div>
+                    <div class="status-badge status-active" id="statusBadge">Active</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Bookings</h3>
+                    <div class="stat-value" id="totalBookings">0</div>
+                </div>
+                <div class="stat-icon">📚</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>This Month</h3>
+                    <div class="stat-value" id="monthBookings">0</div>
+                </div>
+                <div class="stat-icon">📅</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Total Earnings</h3>
+                    <div class="stat-value" id="totalEarnings">₦0</div>
+                </div>
+                <div class="stat-icon">💰</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h3>Avg Rating</h3>
+                    <div class="stat-value" id="avgRating">0.0</div>
+                </div>
+                <div class="stat-icon">⭐</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('bookings')">
+                📚 Bookings
+            </button>
+            <button class="tab" onclick="switchTab('earnings')">
+                💰 Earnings
+            </button>
+            <button class="tab" onclick="switchTab('reviews')">
+                ⭐ Reviews
+            </button>
+            <button class="tab" onclick="switchTab('profile')">
+                👤 Profile
+            </button>
+            <button class="tab" onclick="switchTab('availability')">
+                📅 Availability
+            </button>
+        </div>
+
+        <!-- Bookings Tab -->
+        <div id="bookingsTab" class="tab-content active">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2 class="section-title">My Bookings</h2>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="loading">
+                    <div class="spinner"></div>
+                    <p>Loading your bookings...</p>
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">📚</div>
+                    <h3>No bookings yet</h3>
+                    <p>Students will book sessions with you soon!</p>
+                </div>
+
+                <!-- Bookings Grid -->
+                <div id="bookingsGrid" class="bookings-grid"></div>
+            </div>
+        </div>
+
+        <!-- Earnings Tab -->
+        <div id="earningsTab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">Earnings Overview</h2>
+                
+                <div class="earnings-summary">
+                    <div class="earnings-card">
+                        <h4>Total Earnings</h4>
+                        <div class="earnings-amount" id="earningsTotal">₦0</div>
+                    </div>
+                    <div class="earnings-card">
+                        <h4>This Month</h4>
+                        <div class="earnings-amount" id="earningsMonth">₦0</div>
+                    </div>
+                    <div class="earnings-card">
+                        <h4>Last Month</h4>
+                        <div class="earnings-amount" id="earningsLastMonth">₦0</div>
+                    </div>
+                    <div class="earnings-card">
+                        <h4>Pending</h4>
+                        <div class="earnings-amount" id="earningsPending">₦0</div>
+                    </div>
+                </div>
+
+                <div id="earningsHistory"></div>
+            </div>
+        </div>
+
+        <!-- Reviews Tab -->
+        <div id="reviewsTab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">Student Reviews</h2>
+                <div id="reviewsGrid" class="reviews-grid"></div>
+            </div>
+        </div>
+
+        <!-- Profile Tab -->
+        <div id="profileTab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">My Profile</h2>
+                <form id="profileForm" onsubmit="updateProfile(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bio">Bio *</label>
+                            <textarea id="bio" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="qualifications">Qualifications *</label>
+                            <input type="text" id="qualifications" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="experience">Experience *</label>
+                            <input type="text" id="experience" required placeholder="e.g., 5 years">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="hourlyRate">Hourly Rate (₦) *</label>
+                            <input type="number" id="hourlyRate" required min="1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="subjects">Subjects (comma-separated) *</label>
+                            <input type="text" id="subjects" required placeholder="e.g., Mathematics, English">
+                        </div>
+                    </div>
+
+                    <button type="submit" class="action-btn btn-success" style="width: auto; padding: 1rem 3rem;">
+                        💾 Save Changes
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Availability Tab -->
+        <div id="availabilityTab" class="tab-content">
+            <div class="section-card">
+                <h2 class="section-title">Set Your Availability</h2>
+                <p style="color: #666; margin-bottom: 2rem;">
+                    Configure your available hours for each day of the week
+                </p>
+
+                <div class="availability-grid" id="availabilityGrid">
+                    <!-- Days will be generated by JavaScript -->
+                </div>
+
+                <button class="action-btn btn-success" onclick="saveAvailability()" style="margin-top: 2rem; padding: 1rem 3rem;">
+                    💾 Save Availability
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:5000/api';
+        
+        let allBookings = [];
+        let tutorProfile = null;
+        let currentTab = 'bookings';
+
+        // Check authentication
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user || user.role !== 'tutor') {
+            window.location.href = 'index.html';
+        }
+
+        // Check if tutor is approved
+        if (user.isApproved === false) {
+            alert('Your account is pending admin approval. You will be notified once approved.');
+            // Still allow access to view dashboard
+        }
+
+        // Load dashboard on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            displayUserInfo();
+            loadTutorProfile();
+            loadBookings();
+        });
+
+        // Display user info
+        function displayUserInfo() {
+            const firstName = user.fullName.split(' ')[0];
+            document.getElementById('tutorName').textContent = firstName;
+        }
+
+        // Load tutor profile
+        async function loadTutorProfile() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/tutors/${user.userId}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok && data.tutor) {
+                    tutorProfile = data.tutor;
+                    displayTutorProfile();
+                    populateProfileForm();
+                    generateAvailabilityGrid();
+                }
+            } catch (error) {
+                console.error('Load profile error:', error);
+            }
+        }
+
+        // Display tutor profile
+        function displayTutorProfile() {
+            document.getElementById('tutorRating').textContent = tutorProfile.rating.toFixed(1);
+            document.getElementById('avgRating').textContent = tutorProfile.rating.toFixed(1);
+            
+            const statusBadge = document.getElementById('statusBadge');
+            if (tutorProfile.isActive) {
+                statusBadge.textContent = 'Active';
+                statusBadge.className = 'status-badge status-active';
+            } else {
+                statusBadge.textContent = 'Inactive';
+                statusBadge.className = 'status-badge status-pending';
+            }
+        }
+
+        // Load bookings
+        async function loadBookings() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/my-bookings`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    allBookings = data.bookings;
+                    updateStats();
+                    displayBookings();
+                    loadReviews();
+                } else {
+                    showAlert(data.error || 'Failed to load bookings', 'error');
+                }
+            } catch (error) {
+                console.error('Load bookings error:', error);
+                showAlert('Failed to load bookings. Please refresh.', 'error');
+            } finally {
+                document.getElementById('loadingState').style.display = 'none';
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            const total = allBookings.length;
+            const thisMonth = allBookings.filter(b => {
+                const bookingDate = new Date(b.date);
+                const now = new Date();
+                return bookingDate.getMonth() === now.getMonth() && 
+                       bookingDate.getFullYear() === now.getFullYear();
+            }).length;
+
+            const totalEarnings = allBookings
+                .filter(b => b.paymentStatus === 'paid')
+                .reduce((sum, b) => sum + b.tutorEarnings, 0);
+
+            const monthEarnings = allBookings
+                .filter(b => {
+                    const bookingDate = new Date(b.date);
+                    const now = new Date();
+                    return b.paymentStatus === 'paid' &&
+                           bookingDate.getMonth() === now.getMonth() && 
+                           bookingDate.getFullYear() === now.getFullYear();
+                })
+                .reduce((sum, b) => sum + b.tutorEarnings, 0);
+
+            document.getElementById('totalBookings').textContent = total;
+            document.getElementById('monthBookings').textContent = thisMonth;
+            document.getElementById('totalEarnings').textContent = `₦${totalEarnings.toLocaleString()}`;
+            
+            // Earnings tab
+            document.getElementById('earningsTotal').textContent = `₦${totalEarnings.toLocaleString()}`;
+            document.getElementById('earningsMonth').textContent = `₦${monthEarnings.toLocaleString()}`;
+        }
+
+        // Display bookings
+        function displayBookings() {
+            const grid = document.getElementById('bookingsGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            if (allBookings.length === 0) {
+                grid.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            
+            // Sort by date (newest first)
+            const sortedBookings = [...allBookings].sort((a, b) => 
+                new Date(b.date) - new Date(a.date)
+            );
+            
+            grid.innerHTML = sortedBookings.map(booking => createBookingCard(booking)).join('');
+        }
+
+        // Create booking card HTML
+        function createBookingCard(booking) {
+            const date = new Date(booking.date);
+            const day = date.getDate();
+            const month = date.toLocaleDateString('en-US', { month: 'short' });
+            const year = date.getFullYear();
+            
+            const statusClass = `status-${booking.status}`;
+            const cardClass = booking.status === 'pending' ? 'pending' : 
+                             booking.status === 'completed' ? 'completed' : '';
+
+            // Determine available actions
+            let actions = '';
+            if (booking.status === 'pending') {
+                actions = `
+                    <button class="action-btn btn-success" onclick="acceptBooking('${booking._id}')">
+                        ✓ Accept
+                    </button>
+                    <button class="action-btn btn-danger" onclick="rejectBooking('${booking._id}')">
+                        ✗ Decline
+                    </button>
+                `;
+            } else if (booking.status === 'confirmed' && new Date(booking.date) < new Date()) {
+                actions = `
+                    <button class="action-btn btn-primary" onclick="markCompleted('${booking._id}')">
+                        ✓ Mark Complete
+                    </button>
+                `;
+            } else {
+                actions = `
+                    <button class="action-btn btn-secondary" onclick="viewDetails('${booking._id}')">
+                        View Details
+                    </button>
+                `;
+            }
+
+            return `
+                <div class="booking-card ${cardClass}">
+                    <div class="booking-date">
+                        <div class="date-day">${day}</div>
+                        <div class="date-month">${month} ${year}</div>
+                    </div>
+                    <div class="booking-details">
+                        <h3 class="student-name">${booking.studentId.fullName}</h3>
+                        <div class="booking-meta">
+                            <span class="meta-item">
+                                📚 ${formatCategory(booking.category)}
+                            </span>
+                            <span class="meta-item">
+                                📖 ${booking.subject}
+                            </span>
+                            <span class="meta-item">
+                                🕐 ${formatTime(booking.time)}
+                            </span>
+                            <span class="meta-item">
+                                ⏱️ ${booking.duration}h
+                            </span>
+                            <span class="meta-item">
+                                ${booking.sessionType === 'online' ? '💻' : '👥'} ${booking.sessionType}
+                            </span>
+                            <span class="meta-item">
+                                💰 ₦${booking.tutorEarnings.toLocaleString()}
+                            </span>
+                        </div>
+                        <span class="booking-status ${statusClass}">
+                            ${booking.status.toUpperCase()}
+                        </span>
+                    </div>
+                    <div class="booking-actions">
+                        ${actions}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Accept booking
+        async function acceptBooking(bookingId) {
+            if (!confirm('Accept this booking request?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'confirmed' })
+                });
+
+                if (response.ok) {
+                    showAlert('Booking accepted successfully!', 'success');
+                    loadBookings();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.error || 'Failed to accept booking', 'error');
+                }
+            } catch (error) {
+                console.error('Accept booking error:', error);
+                showAlert('Failed to accept booking', 'error');
+            }
+        }
+
+        // Reject booking
+        async function rejectBooking(bookingId) {
+            if (!confirm('Decline this booking request?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'cancelled' })
+                });
+
+                if (response.ok) {
+                    showAlert('Booking declined', 'info');
+                    loadBookings();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.error || 'Failed to decline booking', 'error');
+                }
+            } catch (error) {
+                console.error('Reject booking error:', error);
+                showAlert('Failed to decline booking', 'error');
+            }
+        }
+
+        // Mark completed
+        async function markCompleted(bookingId) {
+            if (!confirm('Mark this session as completed?')) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/bookings/${bookingId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: 'completed' })
+                });
+
+                if (response.ok) {
+                    showAlert('Session marked as completed!', 'success');
+                    loadBookings();
+                } else {
+                    const data = await response.json();
+                    showAlert(data.error || 'Failed to update status', 'error');
+                }
+            } catch (error) {
+                console.error('Mark completed error:', error);
+                showAlert('Failed to update status', 'error');
+            }
+        }
+
+        // View details
+        function viewDetails(bookingId) {
+            const booking = allBookings.find(b => b._id === bookingId);
+            alert(`Booking Details:\n\nStudent: ${booking.studentId.fullName}\nEmail: ${booking.studentId.email}\nPhone: ${booking.studentId.phone}\nSubject: ${booking.subject}\nDate: ${new Date(booking.date).toLocaleDateString()}\nTime: ${booking.time}\nDuration: ${booking.duration}h\nType: ${booking.sessionType}\nEarnings: ₦${booking.tutorEarnings.toLocaleString()}`);
+        }
+
+        // Load reviews
+        async function loadReviews() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/ratings/tutor/${user.userId}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    displayReviews(data.ratings);
+                }
+            } catch (error) {
+                console.error('Load reviews error:', error);
+            }
+        }
+
+        // Display reviews
+        function displayReviews(ratings) {
+            const grid = document.getElementById('reviewsGrid');
+
+            if (ratings.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-icon">⭐</div>
+                        <h3>No reviews yet</h3>
+                        <p>Complete sessions to receive student feedback</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = ratings.map(rating => `
+                <div class="review-card">
+                    <div class="review-header">
+                        <span class="review-student">${rating.studentId.fullName}</span>
+                        <span class="review-rating">${'⭐'.repeat(rating.rating)}</span>
+                    </div>
+                    <div class="review-date">
+                        ${new Date(rating.createdAt).toLocaleDateString('en-US', { 
+                            year: 'numeric', 
+                            month: 'long', 
+                            day: 'numeric' 
+                        })}
+                    </div>
+                    ${rating.review ? `<div class="review-text">${rating.review}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        // Populate profile form
+        function populateProfileForm() {
+            if (!tutorProfile) return;
+
+            document.getElementById('bio').value = tutorProfile.bio;
+            document.getElementById('qualifications').value = tutorProfile.qualifications;
+            document.getElementById('experience').value = tutorProfile.experience;
+            document.getElementById('hourlyRate').value = tutorProfile.hourlyRate;
+            document.getElementById('subjects').value = tutorProfile.subjects.join(', ');
+        }
+
+        // Update profile
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const profileData = {
+                bio: document.getElementById('bio').value,
+                qualifications: document.getElementById('qualifications').value,
+                experience: document.getElementById('experience').value,
+                hourlyRate: parseInt(document.getElementById('hourlyRate').value),
+                subjects: document.getElementById('subjects').value.split(',').map(s => s.trim())
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/tutors/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(profileData)
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert('Profile updated successfully!', 'success');
+                    tutorProfile = data.tutorProfile;
+                } else {
+                    showAlert(data.error || 'Failed to update profile', 'error');
+                }
+            } catch (error) {
+                console.error('Update profile error:', error);
+                showAlert('Failed to update profile', 'error');
+            }
+        }
+
+        // Generate availability grid
+        function generateAvailabilityGrid() {
+            const grid = document.getElementById('availabilityGrid');
+            const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+            const dayKeys = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+            grid.innerHTML = days.map((day, index) => {
+                const dayKey = dayKeys[index];
+                const slots = tutorProfile?.availability?.[dayKey] || [];
+                const hasSlots = slots.length > 0;
+                const defaultSlot = slots[0] || { start: '09:00', end: '17:00' };
+
+                return `
+                    <div class="availability-day">
+                        <div class="day-name">${day}</div>
+                        <div class="time-inputs">
+                            <input type="time" id="${dayKey}-start" value="${defaultSlot.start}" 
+                                   ${!hasSlots ? 'disabled' : ''}>
+                            <span>to</span>
+                            <input type="time" id="${dayKey}-end" value="${defaultSlot.end}"
+                                   ${!hasSlots ? 'disabled' : ''}>
+                        </div>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="${dayKey}-enabled" 
+                                   ${hasSlots ? 'checked' : ''} 
+                                   onchange="toggleDay('${dayKey}')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Toggle day availability
+        function toggleDay(dayKey) {
+            const enabled = document.getElementById(`${dayKey}-enabled`).checked;
+            document.getElementById(`${dayKey}-start`).disabled = !enabled;
+            document.getElementById(`${dayKey}-end`).disabled = !enabled;
+        }
+
+        // Save availability
+        async function saveAvailability() {
+            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+            const availability = {};
+
+            days.forEach(day => {
+                const enabled = document.getElementById(`${day}-enabled`).checked;
+                if (enabled) {
+                    const start = document.getElementById(`${day}-start`).value;
+                    const end = document.getElementById(`${day}-end`).value;
+                    availability[day] = [{ start, end }];
+                } else {
+                    availability[day] = [];
+                }
+            });
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/tutors/profile`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ availability })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showAlert('Availability updated successfully!', 'success');
+                    tutorProfile = data.tutorProfile;
+                } else {
+                    showAlert(data.error || 'Failed to update availability', 'error');
+                }
+            } catch (error) {
+                console.error('Save availability error:', error);
+                showAlert('Failed to update availability', 'error');
+            }
+        }
+
+        // Switch tabs
+        function switchTab(tab) {
+            currentTab = tab;
+            
+            // Update tab UI
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Hide all tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(`${tab}Tab`).classList.add('active');
+        }
+
+        // Format category
+        function formatCategory(category) {
+            const names = {
+                'academic': 'Academic',
+                'digital-skills': 'Digital Skills',
+                'entrepreneurship': 'Entrepreneurship'
+            };
+            return names[category] || category;
+        }
+
+        // Format time
+        function formatTime(timeStr) {
+            const [hour, min] = timeStr.split(':').map(Number);
+            const period = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour > 12 ? hour - 12 : (hour === 0 ? 12 : hour);
+            return `${displayHour}:${min.toString().padStart(2, '0')} ${period}`;
+        }
+
+        // Show alert
+        function showAlert(message, type) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
